@@ -2,7 +2,7 @@
 
 ## PROBLEM 1
 
-Implement a utility function to format a numerical value into a standardized currency string. The solution should utilize localized formatting rules, specifically catering to currency notations with support for custom fractional precision, currency codes, and standard notations.
+Implement a utility function to format a raw numeric value into a localized currency string configuration, specifically tailoring the output format according to region and precision constraints.
 
 ## SOLUTION
 
@@ -23,7 +23,7 @@ const formatPrice = (price) => {
 
 ## PROBLEM 2
 
-Develop a serialization utility that converts native JavaScript objects into standardized JSON strings. This function serves as a fundamental component for processing user data before transmitting it to a remote API or persisting it within storage engines.
+Develop a parsing utility that serializes a structured JavaScript configuration or data object into a standardized, web-safe JSON string representation for persistent storage or network transmission.
 
 ## SOLUTION
 
@@ -37,7 +37,7 @@ const stringifyObj = (obj) => JSON.stringify(obj);
 
 ## PROBLEM 3
 
-Design an asynchronous simulation engine that mimics a remote API request using JavaScript Promises. The implementation must include an explicit execution delay of two seconds before resolving with user data or handling failure branches conditionally.
+Construct an asynchronous utility function that simulates an external API network request using a native JavaScript Promise. The operation must introduce a deterministic delay before evaluating the outcome and returning user data.
 
 ## SOLUTION
 
@@ -61,7 +61,7 @@ const fakeAPI = () => {
 
 ## PROBLEM 4
 
-Implement an asynchronous consumption wrapper that utilizes `async/await` syntax to resolve data from a Promise-based mock API. The handler must pause execution until the promise resolves, allowing synchronous-style evaluation and logging of the returned payload.
+Implement an asynchronous handling wrapper using modern async/await syntax to intercept, unpack, and log data generated from an unresolved promise returned by a simulation engine.
 
 ## SOLUTION
 
@@ -76,7 +76,7 @@ const getDataFromFakeAPI = async () => {
 
 ## PROBLEM 5
 
-Construct a structural debouncing utility to optimize rapid search inputs or high-frequency event streams. The function must return a closure that manages a internal timeout identifier, effectively clearing previous execution registrations if triggered repeatedly within a designated millisecond delay.
+Design a higher-order debounce function to optimize search input event streams. The solution must maintain an internal closure state to clear impending timeouts if sequential invocations occur within a specified execution window.
 
 ## SOLUTION
 
