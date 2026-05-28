@@ -1,4 +1,3 @@
-```
 # DAY-6
 
 ## PROBLEM 1
@@ -168,7 +167,8 @@ Build a state synchronization orchestration wrapper for managing networking and 
 ## SOLUTION
 
 ```javascript
-const API_URl = "[https://jsonplaceholder.typicode.com/users](https://jsonplaceholder.typicode.com/users)";
+const API_URl =
+  "[https://jsonplaceholder.typicode.com/users](https://jsonplaceholder.typicode.com/users)";
 
 let state = {
   loading: false,
@@ -204,7 +204,4 @@ const runTest = async () => {
     console.log(user1);
   }
 };
-```
-
-
 ```
