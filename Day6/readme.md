@@ -1,5 +1,5 @@
 ```
-# DAY-2
+# DAY-6
 
 ## PROBLEM 1
 
