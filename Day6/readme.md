@@ -163,7 +163,7 @@ const groupTasks2 = groupByStatusV2(orders);
 
 ## PROBLEM 5
 
-Build a state synchronization orchestration wrapper for managing networking and mutation side-effects. The engine must systematically control structural properties reflecting real-time pipeline phases across retrieval operations, safely transitioning lifecycle parameters upon completion or intercepting fatal exceptions.
+Build a state synchronization orchestration wrapper for managing networking and mutation side-effects. The engine must systematically control structural properties reflecting real-time pipeline phases across retrieval operations, safely transitioning lifecycle parameters upon completion or intercepting fatal exceptions..
 
 ## SOLUTION
 
