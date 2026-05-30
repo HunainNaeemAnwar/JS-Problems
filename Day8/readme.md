@@ -1,26 +1,12 @@
-// Problem 1 — Build a Theme Manager
-// Problem Statement
+## DAY 8
 
-// Create a reusable theme manager system.
+## PROBLEM 1
 
-// Features:
+Create a reusable theme manager system utilizing JavaScript classes and private class fields. The implementation must allow setting the current theme, retrieving the current theme, and toggling dynamically between light and dark modes while rejecting invalid states with an appropriate warning mechanism.
 
-// set current theme
-// get current theme
-// toggle between:
-// light
-// dark
+## SOLUTION
 
-// Use:
-
-// class
-// Example
-// theme.setTheme("dark");
-
-// theme.getTheme();
-
-// theme.toggleTheme();
-
+```javascript
 class Theme {
   #currentTheme;
   constructor(theme = "light") {
@@ -53,46 +39,21 @@ const theme = new Theme("dark");
 // console.log(theme.toggleTheme());
 // console.log(theme.toggleTheme());
 // console.log(theme.toggleTheme());
+```
 
-// Problem 2 — Validate Signup Form
-// Problem Statement
+---
 
-// Create a signup validation function.
+## PROBLEM 2
 
-// Rules:
+Develop a signup form validation function that executes comprehensive constraint validation on user data without the use of regular expressions. The validation rules require a username of at least 3 characters, an email containing both "@" and "." symbols, and a password of at least 8 characters that must contain at least one uppercase letter, one lowercase letter, one numeric character, and one special character.
 
-// username:
-// minimum 3 characters
-// email:
-// must contain @ and .
-// password:
-// minimum 8 characters
-// must contain:
-// capital letter
-// small letter
-// number
+## SOLUTION
 
-// Return:
-
-// {
-//   valid: true,
-//   errors: []
-// }
-
-// or:
-
-// {
-//   valid: false,
-//   errors: ["Password must contain a number"]
-// }
-
-// Do this:
-
-// WITHOUT regex
+```javascript
 const userData = {
-  userName: "hs",
+  userName: "hse",
   email: "hunainnaeemanwargmail.com",
-  password: "Hunain0",
+  password: "Hunainr4r4#",
 };
 const validateSignUp = (userDataObj) => {
   const resObj = {
@@ -106,11 +67,9 @@ const validateSignUp = (userDataObj) => {
     resObj.valid = false;
     resObj.errors.push("Username should be of minimum 3 characters");
   }
-  if (email.includes(".") && email.includes("@")) {
-    resObj.valid = true;
-  } else {
+  if (!email.includes(".") || !email.includes("@")) {
     resObj.valid = false;
-    resObj.errors.push("Email should include '.' '@' ");
+    resObj.errors.push("Email must contain both '@' and '.'");
   }
 
   let hasSmall = false;
@@ -130,17 +89,197 @@ const validateSignUp = (userDataObj) => {
     }
   }
 
-  let passwordCondition =
-    password.length > 8 && hasCapital && hasNumber && hasSmall && hasSpecial;
-  if (passwordCondition) {
-    resObj.valid = true;
-  } else {
+  if (password.length < 8) {
+    resObj.valid = false;
+    resObj.errors.push("Password must be at least 8 characters long.");
+  }
+  if (!hasCapital || !hasSmall || !hasNumber || !hasSpecial) {
     resObj.valid = false;
     resObj.errors.push(
-      "Password must be atleast 8 char - containing capital char ,small char ,numbers and specialc char ",
+      "Password must contain at least one uppercase letter, one lowercase letter, and one number.",
     );
   }
   return resObj;
 };
 
-console.log(validateSignUp(userData));
+// console.log(validateSignUp(userData));
+```
+
+---
+
+## PROBLEM 3
+
+Implement an asynchronous API wrapper using Promises and async/await syntax to handle temporary network or data fetching failures via a retry mechanism. The utility must execute a designated promise-returning function up to a configured maximum threshold before propagating a final execution error and terminating the lifecycle loading state.
+
+## SOLUTION
+
+```javascript
+const dummyUsers = [
+  {
+    id: 1,
+    name: "Hunain Naeem",
+    email: "hunain.naeemanwar@gmail.com",
+    role: "Admin",
+    status: "active",
+    avatar:
+      "[https://api.dicebear.com/7.x/avataaars/svg?seed=Hunain](https://api.dicebear.com/7.x/avataaars/svg?seed=Hunain)",
+  },
+  {
+    id: 2,
+    name: "John Doe",
+    email: "john.doe@example.com",
+    role: "Editor",
+    status: "active",
+    avatar:
+      "[https://api.dicebear.com/7.x/avataaars/svg?seed=John](https://api.dicebear.com/7.x/avataaars/svg?seed=John)",
+  },
+  {
+    id: 3,
+    name: "Sarah Smith",
+    email: "sarah.smith@example.com",
+    role: "Subscriber",
+    status: "inactive",
+    avatar:
+      "[https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah](https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah)",
+  },
+  {
+    id: 4,
+    name: "Alex Mercer",
+    email: "alex.m@example.com",
+    role: "Subscriber",
+    status: "pending",
+    avatar:
+      "[https://api.dicebear.com/7.x/avataaars/svg?seed=Alex](https://api.dicebear.com/7.x/avataaars/svg?seed=Alex)",
+  },
+  {
+    id: 5,
+    name: "Emma Watson",
+    email: "emma.w@example.com",
+    role: "Moderator",
+    status: "active",
+    avatar:
+      "[https://api.dicebear.com/7.x/avataaars/svg?seed=Emma](https://api.dicebear.com/7.x/avataaars/svg?seed=Emma)",
+  },
+];
+const API = () => {
+  return new Promise((res, rej) => {
+    setTimeout(() => {
+      const randomSuccess = Math.random() > 0.5;
+      if (randomSuccess) {
+        res(dummyUsers);
+        return;
+      } else {
+        rej(new Error("Something Went Wrong: No users found"));
+      }
+    }, 1500);
+  });
+};
+
+const fetchWithRetry = async (promiseFunc, maxTry) => {
+  for (let attempt = 1; attempt <= maxTry; attempt++) {
+    try {
+      const data = await promiseFunc();
+      return data;
+    } catch (error) {
+      console.log(`Attempt ${attempt} failed.`);
+
+      if (attempt === maxTry) {
+        console.log("Loading finished with error.");
+        throw new Error(
+          `Failed after ${maxTry} attempts. Original error: ${error.message}`,
+        );
+      }
+    }
+  }
+};
+// fetchWithRetry(API, 2)
+//   .then((finalData) => console.log("Final Output:", finalData))
+//   .catch((err) => console.error("Final Error:", err.message));
+```
+
+---
+
+## PROBLEM 4
+
+Construct an analytics calculation engine to parse an array of product inventory items. The aggregation mechanism must traverse the inventory dataset to track metrics including total product records, total cumulative stock levels, structural average prices, and identify the single most expensive product record.
+
+## SOLUTION
+
+```javascript
+const input = [
+  { name: "Mouse", price: 500, stock: 10 },
+  { name: "Monitor", price: 5000, stock: 2 },
+];
+
+const analytics = (arr) => {
+  let totalProducts = arr.length;
+  let totalStock = 0;
+  let totalPriceSum = 0;
+  let mostExpensive = arr[0];
+
+  arr.forEach((element) => {
+    totalPriceSum += element.price;
+    totalStock += element.stock;
+    if (element.price > mostExpensive.price) {
+      mostExpensive = element;
+    }
+  });
+
+  let averagePrice = totalPriceSum / totalProducts;
+
+  return {
+    totalProducts,
+    totalStock,
+    averagePrice,
+    mostExpensive,
+  };
+};
+
+// console.log(analytics(input));
+```
+
+---
+
+## PROBLEM 5
+
+Design a robust stateful user authentication and session management system using class encapsulation. The architecture must explicitly manage secure private session instances to encapsulate user context, facilitate session initialization upon credential submission, verify active login status, retrieve current object storage payloads, and clean individual data properties during the logout process.
+
+## SOLUTION
+
+```javascript
+class AuthenticationSystem {
+  #user;
+  constructor() {
+    this.#user = null;
+  }
+  login({ name, id } = {}) {
+    if (!name || !id) {
+      return `field shouldn't be empty`;
+    }
+    this.#user = { name, id };
+    return "Login successful";
+  }
+  isLoggedIn() {
+    return this.#user !== null;
+  }
+  getUser() {
+    return this.#user;
+  }
+  logOut() {
+    if (this.#user) {
+      this.#user = null; // FIX: Wipes the session data clean
+      return "Logout successful";
+    }
+    return "No active session found";
+  }
+}
+
+const user1 = new AuthenticationSystem();
+
+console.log(user1);
+user1.login({ name: "hunain", id: 1 });
+console.log(user1.getUser());
+console.log(user1.isLoggedIn());
+console.log(user1.logOut());
+console.log(user1.isLoggedIn());
+```
